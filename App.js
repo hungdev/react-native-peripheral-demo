@@ -1,114 +1,72 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React from 'react'
+import { TouchableOpacity, SafeAreaView, View, Text } from 'react-native'
+import Peripheral, { Characteristic, Service } from 'react-native-peripheral'
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+export default class App extends React.Component<{}> {
+  state = {
+    value: '',
+  }
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  onOpen() {
+    Peripheral.onStateChanged(state => {
+      if (state === 'poweredOn') {
+        const serviceUuid = 'ebed0e09-033a-4bfe-8dcc-20a04fad944e'
+        Peripheral.addService(
+          new Service({
+            // these are just randomly generated UUIDs
+            uuid: serviceUuid,
+            characteristics: [
+              new Characteristic({
+                uuid: 'c36e1c5a-fc6e-48c8-9a8e-d0b350399d0e',
+                value: 'eDox',
+                properties: ['read', 'write'],
+                permissions: ['readable', 'writeable'],
+              }),
+              new Characteristic({
+                uuid: 'fbc47809-76ce-44fa-a2f0-676b95615472',
+                properties: ['read', 'write'],
+                permissions: ['readable', 'writeable'],
+                value: 'eToz',
+                onReadRequest: async () => this.state.value,
+                onWriteRequest: async value => this.setState({ value }),
+              }),
+              new Characteristic({
+                uuid: '72fac38b-cdf9-432a-ba50-c43c8d01ee52',
+                properties: ['read', 'write'],
+                permissions: ['readable', 'writeable'],
+                value: 'ejo5',
+                onReadRequest: async () => this.state.value,
+                onWriteRequest: async value => this.setState({ value }),
+              }),
+              new Characteristic({
+                uuid: '3422b87f-b971-4b97-9f98-497af6d7bdfc',
+                properties: ['read', 'write'],
+                permissions: ['readable', 'writeable'],
+                value: 'c2VyaWFsbnVtYmVyOjEyMzQ1Njc4OQ==',
+                onReadRequest: async () => this.state.value,
+                onWriteRequest: async value => this.setState({ value }),
+              }),
+            ],
+          })
+        ).then(() => {
+          Peripheral.startAdvertising({
+            name: 'BLE Ceee Device',
+            serviceUuids: [serviceUuid],
+          })
+        })
+      }
+    })
+  }
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
+  render() {
+    return (
       <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
+        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 100 }}>
+          <TouchableOpacity onPress={() => this.onOpen()}>
+            <Text>Open</Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
-    </>
-  );
-};
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
-
-export default App;
+    )
+  }
+}
