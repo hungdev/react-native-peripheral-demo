@@ -18,7 +18,7 @@ export default class App extends React.Component<{}> {
             characteristics: [
               new Characteristic({
                 uuid: 'c36e1c5a-fc6e-48c8-9a8e-d0b350399d0e',
-                value: 'eDox',
+                value: 'MjA=', // value is base64 encode
                 properties: ['read', 'write'],
                 permissions: ['readable', 'writeable'],
               }),
@@ -26,19 +26,19 @@ export default class App extends React.Component<{}> {
                 uuid: 'fbc47809-76ce-44fa-a2f0-676b95615472',
                 properties: ['read', 'write'],
                 permissions: ['readable', 'writeable'],
-                value: 'eToz',
+                value: 'NDA=', // value is base64 encode
               }),
               new Characteristic({
                 uuid: '72fac38b-cdf9-432a-ba50-c43c8d01ee52',
                 properties: ['read', 'write'],
                 permissions: ['readable', 'writeable'],
-                value: 'ejo5',
+                value: 'NTA=', // value is base64 encode
               }),
               new Characteristic({
                 uuid: '3422b87f-b971-4b97-9f98-497af6d7bdfc',
                 properties: ['read', 'write'],
                 permissions: ['readable', 'writeable'],
-                value: 'c2VyaWFsbnVtYmVyOjEyMzQ1Njc4OQ==',
+                value: 'c2VyaWFsbnVtYmVyOjEyMzQ1Njc4OQ==', // value is base64 encode
                 // onReadRequest: async () => this.state.value,
                 // onWriteRequest: async value => this.setState({ value }),
               }),
